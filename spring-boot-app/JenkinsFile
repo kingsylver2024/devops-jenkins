@@ -39,7 +39,7 @@ pipeline {
     stage('1. Build et Tests (Maven)') {
       steps {
         sh """
-          cd java-maven-sonar-argocd-helm-k8s/spring-boot-app
+          cd spring-boot-app
           mvn clean package
         """
       }
@@ -52,7 +52,7 @@ pipeline {
       steps {
         withCredentials([string(credentialsId: 'sonarqube', variable: 'SONAR_AUTH_TOKEN')]) {
           sh """
-            cd java-maven-sonar-argocd-helm-k8s/spring-boot-app
+            cd spring-boot-app
             mvn sonar:sonar \
               -Dsonar.login=$SONAR_AUTH_TOKEN \
               -Dsonar.host.url=${env.SONAR_URL}
@@ -68,7 +68,7 @@ pipeline {
       steps {
         script {
           sh """
-            cd java-maven-sonar-argocd-helm-k8s/spring-boot-app
+            cd spring-boot-app
             docker build -t ${DOCKER_IMAGE} .
           """
 
@@ -107,9 +107,9 @@ pipeline {
             git config user.name "kingsylver2024"
 
             sed -i "s#image: kingsylver/images-cicd:.*#image: kingsylver/images-cicd:${BUILD_NUMBER}#" \
-              java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests/deployment.yml
+              spring-boot-app-manifests/deployment.yml
 
-            git add java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests/deployment.yml
+            git add spring-boot-app-manifests/deployment.yml
 
             if git diff --staged --quiet; then
               echo "Aucun changement → rien à pousser"

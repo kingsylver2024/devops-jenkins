@@ -17,6 +17,6 @@ spec:
     spec:
       containers:
       - name: spring-boot-app
-        image: kingsylver/images-cicd:v1
+        image: kingsylver/images-cicd:9
         ports:
         - containerPort: 8080

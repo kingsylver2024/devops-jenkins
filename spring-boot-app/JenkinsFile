@@ -53,7 +53,7 @@ pipeline {
         withCredentials([string(credentialsId: 'sonarqube', variable: 'SONAR_AUTH_TOKEN')]) {
           sh """
             cd spring-boot-app
-            mvn sonar:sonar \
+            mvn mvn org.sonarsource.scanner.maven:sonar-maven-plugin:5.5.0.6356:sonar \
               -Dsonar.login=$SONAR_AUTH_TOKEN \
               -Dsonar.host.url=${env.SONAR_URL}
           """
